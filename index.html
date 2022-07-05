@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Scroll</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Title -->
+    <h1>Unsplash API - Infinite Scroll</h1>
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <img src="loader.svg" alt="loading">
+    </div>
+    <!-- Image Container -->
+    <div class="image-container" id="image-container"></div>
+    <!-- Script -->
+    <script>
+        (function() {
+            var cors_api_host = 'cors-anywhere.herokuapp.com';
+            var cors_api_url = 'https://' + cors_api_host + '/';
+            var slice = [].slice;
+            var origin = window.location.protocol + '//' + window.location.host;
+            var open = XMLHttpRequest.prototype.open;
+            XMLHttpRequest.prototype.open = function() {
+                var args = slice.call(arguments);
+                var targetOrigin = /^https?:\/\/([^\/]+)/i.exec(args[1]);
+                if (targetOrigin && targetOrigin[0].toLowerCase() !== origin &&
+                    targetOrigin[1] !== cors_api_host) {
+                    args[1] = cors_api_url + args[1];
+                }
+                return open.apply(this, args);
+            };
+        })();
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
